@@ -1,6 +1,29 @@
 # LLM 嵌入式开发规则
 
-本文件放在项目根目录，用于约束 LLM 在嵌入式、单片机、RTOS、驱动和板级工程中的代码修改行为。具体可改/不可改文件由 `LLM_BOUNDARY.md` 定义。
+本文件放在项目 `.claude/` 目录下，用于约束 LLM 在嵌入式、单片机、RTOS、驱动和板级工程中的代码修改行为。具体可改/不可改文件由 `.claude/LLM_BOUNDARY.md` 定义。
+
+---
+
+> **使用说明（LLM 生成时阅读）：**
+> 以下内容为模板。`{{...}}` 标记处需要替换为项目实际信息。
+> 非标记处为通用规则，直接保留。
+> 根据项目类型，启用或删除对应章节。
+
+---
+
+## 项目信息
+
+```text
+MCU: {{MCU 型号，如 STM32F103RCTx}}
+内核: {{Cortex-M3/M4/M0+ 等}}
+时钟: {{主频，如 72 MHz}}
+Flash: {{大小，如 256 KB}}
+RAM: {{大小，如 48 KB}}
+工具链: {{如 GCC arm-none-eabi}}
+构建系统: {{如 CMake + Ninja / Makefile / Keil}}
+代码生成器: {{如 STM32CubeMX 6.15.0 / 无}}
+RTOS: {{如 FreeRTOS / 裸机}}
+```
 
 ## 总原则
 
@@ -11,10 +34,11 @@
 - 不删除、重排、简化或优化已验证代码。
 - 修改后必须给出验证方法、硬件风险和下一步确认点。
 - 所有实现遵循 TDD 思路：先定义验证，再实现最小代码，再逐步扩展。
+- 添加新功能时，必须创建独立的 `.c` 和 `.h` 文件实现功能逻辑，不允许把业务逻辑直接写在 `main.c` 或已有文件中。`main.c` 中只放函数调用。
 
 ## 项目边界
 
-项目必须维护 `LLM_BOUNDARY.md`，至少定义：
+项目必须维护 `.claude/LLM_BOUNDARY.md`，至少定义：
 
 - 绝对禁止修改的文件和目录。
 - 默认允许修改的文件和目录。
@@ -23,7 +47,7 @@
 - 主入口和主循环保护点。
 - 测试代码和生成代码允许放置位置。
 
-如果没有 `LLM_BOUNDARY.md` 或没有 `Allowed Files`，LLM 不应修改代码，只能要求用户补充边界。
+如果没有 `.claude/LLM_BOUNDARY.md` 或没有 `Allowed Files`，LLM 不应修改代码，只能要求用户补充边界。
 
 每次修改前必须复述：
 
@@ -58,7 +82,7 @@
 所有实现按以下顺序进行：
 
 1. 定义一个最小可验证目标。
-2. 定义验证方式，例如单元测试、主机测试、串口日志、读 ID、固定输入输出、逻辑分析仪波形。
+2. 定义验证方式（单元测试、主机测试、串口日志、读 ID、固定输入输出、逻辑分析仪波形）。
 3. 先写最小测试、最小验证入口或明确的上板验证步骤。
 4. 实现刚好能通过该验证的最小代码。
 5. 停止扩展，等待验证结果或用户确认。
@@ -76,9 +100,9 @@
 
 除非任务明确允许，不要修改：
 
-- 启动文件。
-- 链接脚本。
-- 时钟树配置。
+- 启动文件（`startup_*.s`、`startup_*.c`）。
+- 链接脚本（`*.ld`、`*.icf`）。
+- 时钟树配置（`SystemClock_Config()` 或等效函数）。
 - BSP 板级支持包。
 - 厂商 SDK / HAL / LL / 标准库。
 - 引脚复用和板级初始化。
@@ -90,6 +114,16 @@
 - 生产参数、校准参数、设备身份信息。
 - OTA、Bootloader、Flash 分区表。
 - 已通过硬件验证的时序代码。
+
+## 代码生成器保护（CubeMX / MCUXpresso 等适用）
+
+当项目使用代码生成器时：
+
+- 代码生成器会在生成文件中标记保护区域（如 CubeMX 的 `USER CODE BEGIN xxx` / `USER CODE END xxx`）。
+- LLM 只能在保护区域内添加或修改代码。
+- 保护区域外的修改会在下次生成时被覆盖，因此禁止修改。
+- 如果需要修改保护区域外的代码，必须提醒用户通过代码生成器操作。
+- 涉及外设配置变更（新增引脚、修改时钟、启用新外设），应引导用户在代码生成器中操作并重新生成，而不是手动修改生成代码。
 
 ## 已验证代码保护
 
@@ -112,12 +146,12 @@ PRODUCTION_VERIFIED
 - 不优化。
 - 不改变延时、顺序、重试次数、GPIO 电平、外设调用顺序。
 
-推荐标记：
+推荐标记格式：
 
 ```c
-// VERIFIED_ON_HARDWARE: 2026-05-18
+// VERIFIED_ON_HARDWARE: {{YYYY-MM-DD}}
 // DO_NOT_TOUCH_TIMING
-// Scope: GPIO order, delay length, retry count, and call order.
+// Scope: {{描述受保护的代码范围}}
 // Any change requires logic-analyzer or oscilloscope revalidation.
 ```
 
@@ -140,14 +174,14 @@ PRODUCTION_VERIFIED
 临时屏蔽已有调用时，必须备注原因、日期和恢复条件：
 
 ```c
-// TEMP_DISABLED_FOR_DEBUG: 2026-05-18
-// Reason: isolate I2C sensor ID read test.
-// Restore after: sensor_id_once test passes on board.
-// app_normal_task();
+// TEMP_DISABLED_FOR_DEBUG: {{YYYY-MM-DD}}
+// Reason: {{屏蔽原因}}
+// Restore after: {{恢复条件}}
+// original_function_call();
 
-// TEMP_TEST: verify sensor ID read once over I2C.
+// TEMP_TEST: {{测试目的}}
 // Remove after board validation passes.
-test_sensor_id_once();
+test_function();
 ```
 
 ## 外设驱动开发

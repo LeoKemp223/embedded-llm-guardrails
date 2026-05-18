@@ -23,20 +23,29 @@
 - LLM_RULES.md: yes/no
 - LLM_BOUNDARY.md: yes/no
 
-Allowed Files:
-- 
+本次允许修改：
+-
 
-Forbidden Files / Areas:
-- 
+本次禁止修改：
+-
 
-Protected Verified Code:
-- 
+本次需要保护的已验证代码：
+-
 
-Need User Confirmation Before Touching:
-- 
+是否需要用户确认越权修改：
+-
 ```
 
-未填写 `Allowed Files` 时，不允许修改代码。
+未确认 `本次允许修改` 列表时，不允许修改代码。
+
+## 代码生成器检查
+
+```text
+项目是否使用代码生成器: yes/no（如 CubeMX、MCUXpresso）
+如果 yes，确认修改是否在 USER CODE 区域内：
+- 如果在 USER CODE 区域内，可以修改。
+- 如果在 USER CODE 区域外，提醒用户通过代码生成器操作。
+```
 
 ## 最小验证
 
@@ -45,16 +54,16 @@ TDD/验证优先：
 - 先写什么测试、验证入口或上板验证步骤：
 
 Build:
-- 
+-
 
 Host Test:
-- 
+-
 
 Board Test:
-- 
+-
 
 Expected Result:
-- 
+-
 ```
 
 ## 特殊场景
