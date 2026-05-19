@@ -1,17 +1,17 @@
-# Claude Code / Cursor / Codex 入口文件
+# Claude Code / Codex / Cursor 入口文件
 
-本文件记录同一套嵌入式 LLM 规则在 Claude Code、Cursor、Codex 中的落地方式。
+本文件记录同一套嵌入式 LLM 规则在 Claude Code、Codex 和 Cursor 中的落地方式。
 
 ## 通用策略
 
-推荐把完整规则和边界配置放在项目内的统一目录：
+推荐把完整规则和边界配置放在目标项目内的统一目录：
 
 ```text
 .ai/LLM_RULES.md
 .ai/LLM_BOUNDARY.md
 ```
 
-各 IDE/Agent 的入口文件只做一件事：引用这两个规则文件，避免多处复制导致规则不一致。
+各工具的入口文件只做一件事：引用这两个规则文件，避免多处复制导致规则不一致。
 
 推荐入口文件都包含三条硬规则：
 
@@ -71,27 +71,11 @@ CLAUDE.md
 ```
 ```
 
-## Cursor
-
-推荐入口：
-
-```text
-.cursor/rules/embedded-llm-guardrails.mdc
-```
-
-建议内容：
-
-```markdown
-Follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing embedded firmware.
-Only modify files listed in the current task's Allowed Files.
-Never refactor hardware-verified code unless explicitly requested.
-Do not edit startup, linker, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or timing-sensitive code unless explicitly allowed.
-Use minimal verifiable patches and provide build or board validation steps.
-```
-
 ## Codex
 
-推荐入口：
+Codex 支持从本仓库根目录安装 skill 包，因为根目录包含 `SKILL.md`。
+
+推荐项目入口：
 
 ```text
 AGENTS.md
@@ -105,6 +89,29 @@ AGENTS.md
 未列入 Allowed Files 的文件默认禁止修改。
 不要修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
 涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码。
+```
+
+## Cursor
+
+Cursor 不读取 `SKILL.md` 作为 skill 包。Cursor 使用 rules 入口文件：
+
+```text
+.cursor/rules/embedded-llm-guardrails.mdc
+```
+
+建议内容：
+
+```markdown
+---
+description: Embedded firmware guardrails
+alwaysApply: true
+---
+
+Follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing embedded firmware.
+Only modify files listed in the current task's Allowed Files.
+Never refactor hardware-verified code unless explicitly requested.
+Do not edit startup, linker, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or timing-sensitive code unless explicitly allowed.
+Use minimal verifiable patches and provide build or board validation steps.
 ```
 
 ## 兜底建议
