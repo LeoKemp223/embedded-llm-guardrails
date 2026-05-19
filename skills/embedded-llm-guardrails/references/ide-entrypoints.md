@@ -1,80 +1,37 @@
-# 主流 IDE / Agent 入口文件
+# Claude Code / Cursor / Codex 入口文件
 
-本文件记录同一套嵌入式 LLM 规则在主流 IDE / Agent 中的落地方式。
+本文件记录同一套嵌入式 LLM 规则在 Claude Code、Cursor、Codex 中的落地方式。
 
 ## 通用策略
 
-推荐把完整规则和边界配置放在项目内的统一目录，默认使用：
-
-```text
-.claude/LLM_RULES.md
-.claude/LLM_BOUNDARY.md
-```
-
-如果团队不希望使用 `.claude/` 作为通用规则目录，也可以改为：
+推荐把完整规则和边界配置放在项目内的统一目录：
 
 ```text
 .ai/LLM_RULES.md
 .ai/LLM_BOUNDARY.md
 ```
 
-无论使用哪个目录，各 IDE/Agent 的入口文件只做一件事：引用这两个规则文件，避免多处复制导致规则不一致。
+各 IDE/Agent 的入口文件只做一件事：引用这两个规则文件，避免多处复制导致规则不一致。
 
 推荐入口文件都包含三条硬规则：
 
 ```markdown
-Read and follow {{RULE_DIR}}/LLM_RULES.md and {{RULE_DIR}}/LLM_BOUNDARY.md before editing firmware.
+Read and follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing firmware.
 Only modify files explicitly listed in the current task's Allowed Files.
 Prefer minimal, buildable, hardware-verifiable patches.
 ```
 
-下文默认使用 `.claude/`。如项目使用 `.ai/`，替换路径即可。
-
-## Cursor
-
-推荐入口：
-
-```text
-.cursor/rules/embedded-llm-guardrails.mdc
-```
-
-旧版 Cursor 可使用：
-
-```text
-.cursorrules
-```
-
-建议内容：
-
-```markdown
-Follow `.claude/LLM_RULES.md` and `.claude/LLM_BOUNDARY.md` before editing embedded firmware.
-Only modify files listed in the current task's Allowed Files.
-Never refactor hardware-verified code unless explicitly requested.
-Do not edit startup, linker, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or timing-sensitive code unless explicitly allowed.
-Use minimal verifiable patches and provide build or board validation steps.
-```
-
-## Codex
-
-推荐入口：
-
-```text
-AGENTS.md
-```
-
-建议内容：
-
-```markdown
-请严格遵守项目 `.claude/LLM_RULES.md` 和 `.claude/LLM_BOUNDARY.md`。
-在嵌入式代码任务中，只做最小可验证修改。
-未列入 Allowed Files 的文件默认禁止修改。
-不要修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
-涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码。
-```
+如果项目只使用 Claude Code，也可以把共享规则放在 `.claude/` 下；多工具共用时推荐 `.ai/`。
 
 ## Claude Code
 
-推荐入口：
+Claude Code 的 skill 本体放在：
+
+```text
+.claude/skills/embedded-llm-guardrails/
+```
+
+推荐入口文件：
 
 ```text
 CLAUDE.md
@@ -96,8 +53,8 @@ CLAUDE.md
 
 修改代码前必须先阅读并遵守：
 
-- `.claude/LLM_RULES.md`
-- `.claude/LLM_BOUNDARY.md`
+- `.ai/LLM_RULES.md`
+- `.ai/LLM_BOUNDARY.md`
 
 核心规则：
 - 只修改当前任务 Allowed Files 列表中的文件
@@ -114,7 +71,25 @@ CLAUDE.md
 ```
 ```
 
-## OpenCode
+## Cursor
+
+推荐入口：
+
+```text
+.cursor/rules/embedded-llm-guardrails.mdc
+```
+
+建议内容：
+
+```markdown
+Follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing embedded firmware.
+Only modify files listed in the current task's Allowed Files.
+Never refactor hardware-verified code unless explicitly requested.
+Do not edit startup, linker, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or timing-sensitive code unless explicitly allowed.
+Use minimal verifiable patches and provide build or board validation steps.
+```
+
+## Codex
 
 推荐入口：
 
@@ -122,21 +97,14 @@ CLAUDE.md
 AGENTS.md
 ```
 
-如果团队希望与 Codex 分开，也可以使用项目说明文档：
-
-```text
-OPENCODE.md
-```
-
 建议内容：
 
 ```markdown
-This is an embedded firmware project.
-Read `.claude/LLM_RULES.md` and `.claude/LLM_BOUNDARY.md` before editing code.
-Only modify files explicitly listed in the current task's Allowed Files.
-If Allowed Files are missing, ask for them and do not edit code.
-Do not edit startup files, linker scripts, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or hardware-verified code unless explicitly allowed.
-Use minimal buildable patches and provide validation steps.
+请严格遵守项目 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
+在嵌入式代码任务中，只做最小可验证修改。
+未列入 Allowed Files 的文件默认禁止修改。
+不要修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
+涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码。
 ```
 
 ## 兜底建议

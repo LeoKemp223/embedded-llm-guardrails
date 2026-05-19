@@ -1,6 +1,6 @@
 # LLM 嵌入式开发规则
 
-本文件放在项目 `.claude/` 目录下，用于约束 LLM 在嵌入式、单片机、RTOS、驱动和板级工程中的代码修改行为。具体可改/不可改文件由 `.claude/LLM_BOUNDARY.md` 定义。
+本文件放在项目 `.ai/` 目录下，用于约束 LLM 在嵌入式、单片机、RTOS、驱动和板级工程中的代码修改行为。具体可改/不可改文件由 `.ai/LLM_BOUNDARY.md` 定义。
 
 ---
 
@@ -27,7 +27,7 @@ RTOS: {{如 FreeRTOS / 裸机}}
 
 ## 总原则
 
-- 每次执行前必须重新读取本文件和 `.claude/LLM_BOUNDARY.md`，不能只依赖历史上下文记忆。
+- 每次执行前必须重新读取本文件和 `.ai/LLM_BOUNDARY.md`，不能只依赖历史上下文记忆。
 - 未显式允许修改的文件，默认禁止修改。
 - 每次任务必须列出 `Allowed Files`。
 - 只做当前任务要求的最小可验证修改。
@@ -84,7 +84,7 @@ RTOS: {{如 FreeRTOS / 裸机}}
 
 ## 项目边界
 
-项目必须维护 `.claude/LLM_BOUNDARY.md`，至少定义：
+项目必须维护 `.ai/LLM_BOUNDARY.md`，至少定义：
 
 - 绝对禁止修改的文件和目录。
 - 默认允许修改的文件和目录。
@@ -93,7 +93,7 @@ RTOS: {{如 FreeRTOS / 裸机}}
 - 主入口和主循环保护点。
 - 测试代码和生成代码允许放置位置。
 
-如果没有 `.claude/LLM_BOUNDARY.md` 或没有 `Allowed Files`，LLM 不应修改代码，只能要求用户补充边界。
+如果没有 `.ai/LLM_BOUNDARY.md` 或没有 `Allowed Files`，LLM 不应修改代码，只能要求用户补充边界。
 
 每次修改前必须复述：
 
