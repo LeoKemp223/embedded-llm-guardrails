@@ -62,7 +62,7 @@ description: 用于在已有嵌入式、单片机、RTOS、驱动、板级工程
 1. 基于分析结果，从模板生成贴合项目实际结构的 `.claude/LLM_RULES.md` 和 `.claude/LLM_BOUNDARY.md`。
 2. 模板中的示例路径必须替换为实际项目路径。
 3. 根据项目类型添加特定章节（如 CubeMX 项目添加 USER CODE 保护说明）。
-4. 在 IDE 入口文件中添加引用（如 Claude Code 的 `CLAUDE.md`）。
+4. 在当前项目使用的 IDE/Agent 入口文件中添加引用（仅维护主流入口：Cursor、Codex、Claude Code、OpenCode）。
 5. 生成 `.claude/settings.json` 权限配置（见下方说明）。
 6. 向用户展示生成的文件，说明关键保护点，请用户确认或调整。
 
@@ -123,11 +123,11 @@ description: 用于在已有嵌入式、单片机、RTOS、驱动、板级工程
 - 权限配置模板：`assets/settings.json`
 - 单次任务模板：`assets/llm-change-request.md`
 - 项目类型检测指南：`references/project-patterns.md`
-- 多 IDE 接入方式：`references/ide-entrypoints.md`
+- 主流 IDE/Agent 接入方式：`references/ide-entrypoints.md`
 
 ## 建议落地方式
 
-配置文件统一放在项目 `.claude/` 目录下，避免污染工程根目录：
+配置文件默认放在项目 `.claude/` 目录下，避免污染工程根目录：
 
 ```text
 .claude/
@@ -136,6 +136,8 @@ description: 用于在已有嵌入式、单片机、RTOS、驱动、板级工程
   settings.json
 ```
 
-并在 IDE/Agent 入口文件中引用它们。不同 IDE 的入口文件参考 `references/ide-entrypoints.md`。
+并在 IDE/Agent 入口文件中引用它们。当前仅维护 Cursor、Codex、Claude Code、OpenCode 的入口方式，参考 `references/ide-entrypoints.md`。
+
+如果团队不使用 Claude Code，也可以把 `.claude/` 视为通用 AI 规则目录；或统一迁移到 `.ai/`，但所有 IDE/Agent 入口文件必须引用同一套规则和边界文件。
 
 > **迁移说明：** 如果项目根目录已有旧版 `LLM_RULES.md` 和 `LLM_BOUNDARY.md`，初始化时应提示用户迁移到 `.claude/` 目录下，并更新所有引用路径。
