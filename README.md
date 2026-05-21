@@ -90,11 +90,11 @@ cp -r /path/to/embeded-ai /path/to/project/.claude/skills/embedded-llm-guardrail
 目标固件项目使用根目录的 `CLAUDE.md` 作为入口：
 
 ```markdown
-# Embedded Firmware Instructions
+# 嵌入式固件指令
 
-Read and follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing firmware.
-Only modify files explicitly listed in the current task's Allowed Files.
-Prefer minimal, buildable, hardware-verifiable patches.
+修改固件前必须阅读并遵守 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
+只允许修改当前任务 Allowed Files 列表中显式列出的文件。
+优先输出最小、可编译、可上板验证的补丁。
 ```
 
 如需 Claude Code 权限配置，可根据 `assets/settings.json` 生成或合并到目标项目的 `.claude/settings.json`。
@@ -112,15 +112,15 @@ cp references/ide-entrypoints.md /path/to/project/.cursor/rules/embedded-llm-gua
 
 ```markdown
 ---
-description: Embedded firmware guardrails
+description: 嵌入式固件安全边界
 alwaysApply: true
 ---
 
-Follow `.ai/LLM_RULES.md` and `.ai/LLM_BOUNDARY.md` before editing embedded firmware.
-Only modify files listed in the current task's Allowed Files.
-Never refactor hardware-verified code unless explicitly requested.
-Do not edit startup, linker, BSP, vendor SDK/HAL, ISR, generated-code protected areas, or timing-sensitive code unless explicitly allowed.
-Use minimal verifiable patches and provide build or board validation steps.
+修改固件前必须阅读并遵守 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
+只允许修改当前任务 Allowed Files 列表中显式列出的文件。
+未经用户明确允许，不得重构已上板验证过的代码。
+不得修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
+只输出最小、可编译、可上板验证的补丁，并附构建或上板验证步骤。
 ```
 
 ## 配置目标项目
