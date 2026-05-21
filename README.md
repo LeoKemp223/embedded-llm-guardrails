@@ -87,15 +87,7 @@ mkdir -p /path/to/project/.claude/skills
 cp -r /path/to/embeded-ai /path/to/project/.claude/skills/embedded-llm-guardrails
 ```
 
-目标固件项目使用根目录的 `CLAUDE.md` 作为入口：
-
-```markdown
-# 嵌入式固件指令
-
-修改固件前必须阅读并遵守 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
-只允许修改当前任务 Allowed Files 列表中显式列出的文件。
-优先输出最小、可编译、可上板验证的补丁。
-```
+目标固件项目使用根目录的 `CLAUDE.md` 作为入口。完整 CLAUDE.md 模板（含项目概述、安全边界、构建、烧录四节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
 
 如需 Claude Code 权限配置，可根据 `assets/settings.json` 生成或合并到目标项目的 `.claude/settings.json`。
 
@@ -108,20 +100,7 @@ mkdir -p /path/to/project/.cursor/rules
 cp references/ide-entrypoints.md /path/to/project/.cursor/rules/embedded-llm-guardrails.mdc
 ```
 
-也可以只写入下面的最小规则：
-
-```markdown
----
-description: 嵌入式固件安全边界
-alwaysApply: true
----
-
-修改固件前必须阅读并遵守 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
-只允许修改当前任务 Allowed Files 列表中显式列出的文件。
-未经用户明确允许，不得重构已上板验证过的代码。
-不得修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
-只输出最小、可编译、可上板验证的补丁，并附构建或上板验证步骤。
-```
+完整 `.cursor/rules/embedded-llm-guardrails.mdc` 模板（含项目概述、安全边界、构建、烧录四节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
 
 ## 配置目标项目
 

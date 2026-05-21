@@ -44,12 +44,13 @@ CLAUDE.md
 ```markdown
 # {{项目名称}} — Claude Code 指令
 
-## 项目概览
+## 项目概述
 
-- MCU: {{MCU 型号}}
-- 工具链: {{工具链}}
-- 生成工具: {{代码生成器，如 STM32CubeMX / 无}}
-- 状态: {{裸机/RTOS}}
+- 芯片: {{MCU 型号，如 STM32F103RCT6}}
+- 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
+- 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
+- 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 状态: {{裸机 / FreeRTOS / Zephyr}}
 
 ## 安全边界
 
@@ -65,12 +66,23 @@ CLAUDE.md
 - 每次只做最小可验证补丁，然后给出验证步骤
 - 涉及外设驱动时，先确认硬件参数和完整信号路径再生成代码
 - main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
+- 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
 
 ## 构建
 
 ```bash
-{{构建命令}}
+{{构建命令，如 cmake --build build}}
 ```
+
+## 烧录
+
+```bash
+{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
+```
+
+- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
+- 接口：{{SWD / JTAG / UART / USB-DFU}}
+- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## Codex
@@ -86,11 +98,46 @@ AGENTS.md
 Codex 生成 AGENTS.md 时必须逐字使用下列中文模板，不得自行翻译为英文。建议内容：
 
 ```markdown
+# {{项目名称}} — Codex 指令
+
 请严格遵守项目 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
+
+## 项目概述
+
+- 芯片: {{MCU 型号，如 STM32F103RCT6}}
+- 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
+- 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
+- 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 状态: {{裸机 / FreeRTOS / Zephyr}}
+
+## 安全边界
+
 在嵌入式代码任务中，只做最小可验证修改。
-未列入 Allowed Files 的文件默认禁止修改。
-不要修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
-涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码。
+
+核心规则：
+- 未列入 Allowed Files 的文件默认禁止修改
+- 不要修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许
+- 遵守 VERIFIED_ON_HARDWARE 等硬件验证标记，不删除、重排或重构
+- 每次只做最小可验证补丁，然后给出验证步骤
+- 涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码
+- main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
+- 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
+
+## 构建
+
+```bash
+{{构建命令，如 cmake --build build}}
+```
+
+## 烧录
+
+```bash
+{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
+```
+
+- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
+- 接口：{{SWD / JTAG / UART / USB-DFU}}
+- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## Cursor
@@ -109,11 +156,45 @@ description: 嵌入式固件安全边界
 alwaysApply: true
 ---
 
+# {{项目名称}} — Cursor 规则
+
+## 项目概述
+
+- 芯片: {{MCU 型号，如 STM32F103RCT6}}
+- 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
+- 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
+- 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 状态: {{裸机 / FreeRTOS / Zephyr}}
+
+## 安全边界
+
 修改固件前必须阅读并遵守 `.ai/LLM_RULES.md` 和 `.ai/LLM_BOUNDARY.md`。
-只允许修改当前任务 Allowed Files 列表中显式列出的文件。
-未经用户明确允许，不得重构已上板验证过的代码。
-不得修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码，除非用户明确允许。
-只输出最小、可编译、可上板验证的补丁，并附构建或上板验证步骤。
+
+核心规则：
+- 只允许修改当前任务 Allowed Files 列表中显式列出的文件
+- 未经用户明确允许，不得重构已上板验证过的代码
+- 不得修改启动文件、链接脚本、BSP、厂商 SDK/HAL、ISR、代码生成器保护区和已验证时序代码
+- 遵守 VERIFIED_ON_HARDWARE / DO_NOT_TOUCH_TIMING 等硬件验证标记
+- 只输出最小、可编译、可上板验证的补丁，并附构建或上板验证步骤
+- 涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码
+- main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
+- 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
+
+## 构建
+
+```bash
+{{构建命令，如 cmake --build build}}
+```
+
+## 烧录
+
+```bash
+{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
+```
+
+- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
+- 接口：{{SWD / JTAG / UART / USB-DFU}}
+- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## 兜底建议
