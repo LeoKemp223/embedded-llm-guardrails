@@ -50,6 +50,7 @@ CLAUDE.md
 - 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
 - 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
 - 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 原理图/硬件文档: {{原理图描述文件路径，如 docs/schematic.md / hardware/pinout.md / 无}}
 - 状态: {{裸机 / FreeRTOS / Zephyr}}
 
 ## 安全边界
@@ -67,6 +68,7 @@ CLAUDE.md
 - 涉及外设驱动时，先确认硬件参数和完整信号路径再生成代码
 - main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
 - 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
+- 需求模糊或缺少关键信息时，必须先向用户澄清后再开发，不得猜测意图或自行假设默认值
 
 ## 构建
 
@@ -74,15 +76,6 @@ CLAUDE.md
 {{构建命令，如 cmake --build build}}
 ```
 
-## 烧录
-
-```bash
-{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
-```
-
-- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
-- 接口：{{SWD / JTAG / UART / USB-DFU}}
-- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## Codex
@@ -108,6 +101,7 @@ Codex 生成 AGENTS.md 时必须逐字使用下列中文模板，不得自行翻
 - 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
 - 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
 - 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 原理图/硬件文档: {{原理图描述文件路径，如 docs/schematic.md / hardware/pinout.md / 无}}
 - 状态: {{裸机 / FreeRTOS / Zephyr}}
 
 ## 安全边界
@@ -122,6 +116,7 @@ Codex 生成 AGENTS.md 时必须逐字使用下列中文模板，不得自行翻
 - 涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码
 - main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
 - 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
+- 需求模糊或缺少关键信息时，必须先向用户澄清后再开发，不得猜测意图或自行假设默认值
 
 ## 构建
 
@@ -129,15 +124,6 @@ Codex 生成 AGENTS.md 时必须逐字使用下列中文模板，不得自行翻
 {{构建命令，如 cmake --build build}}
 ```
 
-## 烧录
-
-```bash
-{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
-```
-
-- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
-- 接口：{{SWD / JTAG / UART / USB-DFU}}
-- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## Cursor
@@ -164,6 +150,7 @@ alwaysApply: true
 - 工具链: {{工具链，如 arm-none-eabi-gcc 10.3}}
 - 构建系统: {{构建系统，如 CMake + Ninja / Makefile / Keil}}
 - 生成工具: {{代码生成器，如 STM32CubeMX 6.15.0 / ESP-IDF idf.py / 无}}
+- 原理图/硬件文档: {{原理图描述文件路径，如 docs/schematic.md / hardware/pinout.md / 无}}
 - 状态: {{裸机 / FreeRTOS / Zephyr}}
 
 ## 安全边界
@@ -179,6 +166,7 @@ alwaysApply: true
 - 涉及外设驱动时，先确认硬件参数和完整信号路径，再生成代码
 - main.c 中只允许添加带注释的函数调用，不写复杂业务逻辑
 - 代码生成器项目中，存在「在生成器中配置 vs 直接改代码」两条实现路径时，必须先与用户确认路径
+- 需求模糊或缺少关键信息时，必须先向用户澄清后再开发，不得猜测意图或自行假设默认值
 
 ## 构建
 
@@ -186,15 +174,6 @@ alwaysApply: true
 {{构建命令，如 cmake --build build}}
 ```
 
-## 烧录
-
-```bash
-{{烧录命令，如 STM32_Programmer_CLI -c port=SWD -w build/firmware.hex -rst}}
-```
-
-- 烧录器：{{ST-Link V2 / J-Link / DAPLink / 板载 USB-DFU}}
-- 接口：{{SWD / JTAG / UART / USB-DFU}}
-- 复位/启动模式：{{是否需要手动按 BOOT0+RESET，是否自动复位运行}}
 ```
 
 ## 兜底建议

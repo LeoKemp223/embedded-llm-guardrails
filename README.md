@@ -87,7 +87,7 @@ mkdir -p /path/to/project/.claude/skills
 cp -r /path/to/embeded-ai /path/to/project/.claude/skills/embedded-llm-guardrails
 ```
 
-目标固件项目使用根目录的 `CLAUDE.md` 作为入口。完整 CLAUDE.md 模板（含项目概述、安全边界、构建、烧录四节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
+目标固件项目使用根目录的 `CLAUDE.md` 作为入口。完整 CLAUDE.md 模板（含项目概述、安全边界、构建三节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
 
 如需 Claude Code 权限配置，可根据 `assets/settings.json` 生成或合并到目标项目的 `.claude/settings.json`。
 
@@ -100,7 +100,7 @@ mkdir -p /path/to/project/.cursor/rules
 cp references/ide-entrypoints.md /path/to/project/.cursor/rules/embedded-llm-guardrails.mdc
 ```
 
-完整 `.cursor/rules/embedded-llm-guardrails.mdc` 模板（含项目概述、安全边界、构建、烧录四节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
+完整 `.cursor/rules/embedded-llm-guardrails.mdc` 模板（含项目概述、安全边界、构建三节）见 `references/ide-entrypoints.md`，安装时按目标项目实际值替换 `{{...}}` 占位符。
 
 ## 配置目标项目
 
