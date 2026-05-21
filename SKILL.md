@@ -80,9 +80,8 @@ description: 用于在已有嵌入式产品、单片机、RTOS、驱动、板级
    - **检测到 STM32CubeProgrammer**：`STM32_Programmer_CLI *`
    - **检测到 arm-none-eabi 工具链**：`arm-none-eabi-*`
    - **检测到 JLink**：`JLink.exe *`
-3. 询问用户选择权限模式（`dontAsk` 或逐条白名单）。
-4. 如果选择 `dontAsk` 模式，添加破坏性命令的 `deny` 列表。
-5. 如果项目已有 `.claude/settings.json`，合并而非覆盖。
+3. 添加破坏性命令到 `deny` 列表（默认包含 `rm -rf *`、`git push --force *`、`git reset --hard *`）。
+4. 如果项目已有 `.claude/settings.json`，合并而非覆盖。
 
 **如果项目已有配置文件：**
 

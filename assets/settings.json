@@ -1,14 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
-    "_comment_mode": "选择权限模式：dontAsk（宽松）或 default（逐条白名单）",
-    "defaultMode": "dontAsk",
+    "defaultMode": "default",
     "deny": [
       "Bash(rm -rf *)",
       "Bash(git push --force *)",
       "Bash(git reset --hard *)"
     ],
-    "_comment_allow": "仅 defaultMode=default 时生效，dontAsk 模式下不需要逐条白名单",
     "allow": [
       "Bash(git *)",
       "Bash(cmake *)",
