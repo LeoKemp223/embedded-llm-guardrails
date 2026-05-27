@@ -1,6 +1,7 @@
 # Embedded LLM Guardrails
 
 用于在嵌入式、单片机、RTOS、驱动和板级工程中使用 LLM 辅助开发时建立安全边界的 skill。
+<img width="1061" height="728" alt="image" src="https://github.com/user-attachments/assets/96b950b8-9e1f-41e0-b713-a441f7c146db" />
 
 本仓库根目录就是可直接安装的 skill 包，根目录包含必需的 `SKILL.md`。不要再从 `skills/embedded-llm-guardrails/` 子目录安装。
 
